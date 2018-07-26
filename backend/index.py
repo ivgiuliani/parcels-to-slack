@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SERVICE_ACCOUNT_PATH = os.path.join(ROOT, "service_account.json")
+SERVICE_ACCOUNT_PATH = os.path.join(ROOT, "../../service_account.json")
 NAME_LIST_PATH = os.path.join(ROOT, "name_list.txt")
 
 
