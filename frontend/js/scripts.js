@@ -69,7 +69,12 @@
 	video.click(function(e){
 
 	    console.log(getBase64Image(video));
-	    alert('got it');
+
+	    $('#alert').addClass('show');
+	    setTimeout(function() {
+		    $('#alert').removeClass('show');
+		}, 1500);
+		
 	    // video[0].pause();
 	});
 
