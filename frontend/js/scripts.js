@@ -70,7 +70,7 @@
 
 	    console.log(getBase64Image(video));
 	    alert('got it');
-	    video.pause();
+	    // video[0].pause();
 	});
 
 	// populate the video select
