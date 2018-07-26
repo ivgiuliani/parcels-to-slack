@@ -50,8 +50,13 @@ def detect_handwritten_ocr(path, service_account_json_file):
     return response.full_text_annotation.text
 
 
-def get_text_from_image(service_account_path, image_arg, preprocess_arg="thresh"):
+def write_img(img, filename):
+    filename = "{}.png".format(filename)
+    cv2.imwrite(filename, img)
+    return filename
 
+
+def get_text_from_image(service_account_path, image_arg, preprocess_arg="none"):
     nparr = np.fromstring(image_arg, np.uint8)
     if len(nparr) == 0:
         raise Exception("Empty image!!")
@@ -74,16 +79,16 @@ def get_text_from_image(service_account_path, image_arg, preprocess_arg="thresh"
     # noise
     elif preprocess_arg == "blur":
         gray = cv2.medianBlur(gray, 3)
+    elif preprocess_arg == "none":
+        gray = image
 
     # write the grayscale image to disk as a temporary file so we can
     # apply OCR to it
-    filename = "{}.png".format(os.getpid())
-    cv2.imwrite(filename, gray)
+    filename = write_img(gray, "final")
 
     # load the image as a PIL/Pillow image, apply OCR, and then delete
     # the temporary file
     text = detect_handwritten_ocr(filename, service_account_path)
-    os.remove(filename)
 
     return text
 
