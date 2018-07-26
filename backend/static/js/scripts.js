@@ -78,11 +78,26 @@
 		    contentType: 'application/base64',
 		    data: data
 		 })
-		.done(function(data) {
+		.done(function(res) {
+
+			console.log(res);
+			if (res.error) {
+
+				$('#alert').addClass('alert-danger');
+				$('#alert').removeClass('alert-success');
+				$('#alert').text('Name not found!');
+
+			} else {
+
+				$('#alert').addClass('alert-success');
+				$('#alert').removeClass('alert-danger');
+				$('#alert').text('Name found: ' + res.name + '. Message sent!');
+			}
+
 			$('#alert').addClass('show');
 	    	setTimeout(function() {
 		    	$('#alert').removeClass('show');
-			}, 1500);
+			}, 5000);
 		})
 		.fail(function() {alert("error");});
 
