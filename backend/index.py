@@ -4,7 +4,7 @@ from name_matcher import NameMatcher
 from ocr import get_text_from_image
 
 import os
-
+import base64
 
 app = Flask(__name__)
 
@@ -44,7 +44,8 @@ def send_css(path):
 @app.route("/submit_image", methods=['POST'])
 def submit_image():
     try:
-        text = get_text_from_image(SERVICE_ACCOUNT_PATH, request.data)
+        image = base64.b64decode(request.data)
+        text = get_text_from_image(SERVICE_ACCOUNT_PATH, image)
     except RuntimeError as e:
         return InvalidUsage("Invalid image: %s" % str(e), status_code=400)
 
