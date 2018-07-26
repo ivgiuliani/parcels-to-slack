@@ -1,5 +1,4 @@
 class NameMatcher:
-
     def __init__(self, path="name_list.txt"):
         self.__path = path
         self.refresh()

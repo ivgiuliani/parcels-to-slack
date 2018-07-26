@@ -1,6 +1,6 @@
 from slack import all_users, send_parcel_notification
 from flask import Flask, jsonify, request, abort, send_from_directory, render_template
-from NameMatcher import NameMatcher
+from name_matcher import NameMatcher
 from ocr import get_text_from_image
 
 import os
