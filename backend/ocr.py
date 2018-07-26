@@ -62,11 +62,12 @@ def get_text_from_image(service_account_path, image_arg, preprocess_arg="none"):
         raise Exception("Empty image!!")
 
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = None
 
     # check to see if we should apply thresholding to preprocess the
     # image
     if preprocess_arg == "thresh":
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray, 3)
         gray = cv2.adaptiveThreshold(blur, 255,
                                      cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
@@ -78,6 +79,7 @@ def get_text_from_image(service_account_path, image_arg, preprocess_arg="none"):
     # make a check to see if median blurring should be done to remove
     # noise
     elif preprocess_arg == "blur":
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         gray = cv2.medianBlur(gray, 3)
     elif preprocess_arg == "none":
         gray = image
