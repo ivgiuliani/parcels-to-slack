@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, send_from_directory, render_template
 from NameMatcher import NameMatcher
 from ocr import get_text_from_image
 
@@ -12,9 +12,17 @@ SERVICE_ACCOUNT_PATH = os.path.join(ROOT, "../../service_account.json")
 NAME_LIST_PATH = os.path.join(ROOT, "name_list.txt")
 
 
-@app.route("/")
-def hello():
-    return jsonify({"Hello": "World"})
+@app.route('/')
+def root():
+    return render_template('index.html')
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('static/js', path)
+
+@app.route('/css/<path:path>')
+def send_css(path):
+    return send_from_directory('static/css', path)
 
 
 @app.route("/submit_image", methods=['POST'])

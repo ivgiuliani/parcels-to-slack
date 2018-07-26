@@ -68,13 +68,25 @@
 	// Trigger photo take
 	video.click(function(e){
 
-	    console.log(getBase64Image(video));
+		var data = getBase64Image(video);
+		console.log(data);
 
-	    $('#alert').addClass('show');
-	    setTimeout(function() {
-		    $('#alert').removeClass('show');
-		}, 1500);
-		
+		$.ajax({
+		    url: 'submit_image',
+		    type: 'POST',
+		    processData: false,
+		    contentType: 'application/base64',
+		    data: data
+		 })
+		.done(function(data) {
+
+			$('#alert').addClass('show');
+	    	setTimeout(function() {
+		    	$('#alert').removeClass('show');
+			}, 1500);
+		})
+		.fail(function() {alert("error");});
+
 	    // video[0].pause();
 	});
 
