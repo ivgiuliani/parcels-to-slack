@@ -62,8 +62,13 @@ def get_text_from_image(service_account_path, image_arg, preprocess_arg="thresh"
     # check to see if we should apply thresholding to preprocess the
     # image
     if preprocess_arg == "thresh":
-        gray = cv2.threshold(gray, 0, 255,
-                             cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+        blur = cv2.medianBlur(gray, 3)
+        gray = cv2.adaptiveThreshold(blur, 255,
+                                     cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                     cv2.THRESH_BINARY, 11, 6)
+
+        # gray = cv2.threshold(blur, 0, 255,
+        #                      cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
     # make a check to see if median blurring should be done to remove
     # noise
