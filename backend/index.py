@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 from NameMatcher import NameMatcher
 from ocr import get_text_from_image
 
@@ -19,8 +19,8 @@ def hello():
 
 @app.route("/submit_image", methods=['POST'])
 def submit_image():
-    text = ''
 
+    text = ''
     try:
         text = get_text_from_image(SERVICE_ACCOUNT_PATH, request.data)
     except Exception as e:
