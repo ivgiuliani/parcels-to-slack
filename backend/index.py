@@ -12,6 +12,8 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SERVICE_ACCOUNT_PATH = os.path.join(ROOT, "../../service_account.json")
 NAME_LIST_PATH = os.path.join(ROOT, "name_list.txt")
 
+ALL_USERS = {k.lower(): v for k,v in all_users().items()}
+
 
 class InvalidUsage(Exception):
     status_code = 400
@@ -47,8 +49,12 @@ def submit_image():
         image = base64.b64decode(request.data)
         text = get_text_from_image(SERVICE_ACCOUNT_PATH, image)
 
-        nm = NameMatcher(path=NAME_LIST_PATH)
+        nm = NameMatcher(ALL_USERS)
         name = nm.find_name_in_blob_of_text(text)
+
+        user_id = ALL_USERS[name]
+
+        send_parcel_notification(user_id, base64_image=request.data)
     except RuntimeError as e:
         return jsonify({
             "error": str(e)
