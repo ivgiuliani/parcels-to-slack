@@ -43,7 +43,7 @@ def all_users():
         member_list.append(next_page_of_users["members"])
         next_cursor = next_page_of_users["cursor"]
 
-    return member_list
+    return {item['name']:item['id'] for item in member_list}
 
 
 def list_users(cursor=None):
@@ -58,7 +58,7 @@ def list_users(cursor=None):
     results = sc.api_call("users.list", cursor=cursor, limit=500)
     members = []
     for m in results["members"]:
-        members.append({"name": m["real_name"], "id": m["id"]})
+        members.append({"name": m["real_name"],  "id": m["id"]})
 
     next_cursor = None
     if "response_metadata" in results:
