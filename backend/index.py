@@ -46,11 +46,13 @@ def submit_image():
     try:
         image = base64.b64decode(request.data)
         text = get_text_from_image(SERVICE_ACCOUNT_PATH, image)
-    except RuntimeError as e:
-        return InvalidUsage("Invalid image: %s" % str(e), status_code=400)
 
-    nm = NameMatcher(path=NAME_LIST_PATH)
-    name = nm.find_name_in_blob_of_text(text)
+        nm = NameMatcher(path=NAME_LIST_PATH)
+        name = nm.find_name_in_blob_of_text(text)
+    except RuntimeError as e:
+        return jsonify({
+            "error": str(e)
+        })
 
     return jsonify({
         "name": name,

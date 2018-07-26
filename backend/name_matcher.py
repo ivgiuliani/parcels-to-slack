@@ -22,7 +22,7 @@ class NameMatcher:
                 return name
 
         if name_found is None:
-            raise Exception("No name found!")
+            raise RuntimeError("No name found!")
 
 
 if __name__ == "__main__":

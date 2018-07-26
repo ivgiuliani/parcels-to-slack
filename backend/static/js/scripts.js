@@ -79,7 +79,6 @@
 		    data: data
 		 })
 		.done(function(data) {
-
 			$('#alert').addClass('show');
 	    	setTimeout(function() {
 		    	$('#alert').removeClass('show');
