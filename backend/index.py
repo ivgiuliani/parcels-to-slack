@@ -13,6 +13,22 @@ SERVICE_ACCOUNT_PATH = os.path.join(ROOT, "../../service_account.json")
 NAME_LIST_PATH = os.path.join(ROOT, "name_list.txt")
 
 
+class InvalidUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+
 @app.route('/')
 def root():
     return render_template('index.html')
@@ -25,17 +41,12 @@ def send_js(path):
 def send_css(path):
     return send_from_directory('static/css', path)
 
-
 @app.route("/submit_image", methods=['POST'])
 def submit_image():
-
-    text = ''
     try:
         text = get_text_from_image(SERVICE_ACCOUNT_PATH, request.data)
-    except Exception as e:
-        return jsonify({
-            "error": str(e),
-        })
+    except RuntimeError as e:
+        return InvalidUsage("Invalid image: %s" % str(e), status_code=400)
 
     nm = NameMatcher(path=NAME_LIST_PATH)
     name = nm.find_name_in_blob_of_text(text)
