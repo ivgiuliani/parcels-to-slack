@@ -53,6 +53,9 @@ def detect_handwritten_ocr(path, service_account_json_file):
 def get_text_from_image(service_account_path, image_arg, preprocess_arg="thresh"):
 
     nparr = np.fromstring(image_arg, np.uint8)
+    if len(nparr) == 0:
+        raise Exception("Empty image!!")
+
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 

@@ -19,7 +19,15 @@ def hello():
 
 @app.route("/submit_image", methods=['POST'])
 def submit_image():
-    text = get_text_from_image(SERVICE_ACCOUNT_PATH, request.data)
+    text = ''
+
+    try:
+        text = get_text_from_image(SERVICE_ACCOUNT_PATH, request.data)
+    except Exception as e:
+        return jsonify({
+            "error": str(e),
+        })
+
     nm = NameMatcher(path=NAME_LIST_PATH)
     name = nm.find_name_in_blob_of_text(text)
 
