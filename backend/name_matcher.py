@@ -1,11 +1,6 @@
 class NameMatcher:
-    def __init__(self, path="name_list.txt"):
-        self.__path = path
-        self.refresh()
-
-    def refresh(self):
-        with open(self.__path) as f:
-            self.__name_list = f.read().lower().splitlines()
+    def __init__(self, name_dict):
+        self.__name_list=name_dict
 
     def print(self):
         for index, name in enumerate(self.__name_list):
@@ -26,5 +21,10 @@ class NameMatcher:
 
 
 if __name__ == "__main__":
-    nm = NameMatcher()
+    names = {'dario':'id1', 'bob':'id2'}
+    nm = NameMatcher(names)
     nm.print()
+
+    name = nm.find_name_in_blob_of_text("asdasd dario asdas dd sda")
+
+    print("Found {}".format(name))
