@@ -2,20 +2,18 @@
     'use strict';
 
     // globals
-	const video = document.getElementById('video');
+	const video = $('video');
 
-    function getBase64Image(img) {
-	    // Create an empty canvas element
+    function getBase64Image(elem) {
+	    // create an empty canvas element
 	    var canvas = document.createElement('canvas');
 
-	    // TODO: get rid of the video selector
-	    canvas.width = $('#video').width();
-	    canvas.height = $('#video').height();
-	    console.log(canvas);
+	    canvas.width = elem.width();
+	    canvas.height = elem.height();
 
-	    // Copy the image contents to the canvas
+	    // copy the image contents to the canvas
 	    var ctx = canvas.getContext('2d');
-	    ctx.drawImage(img, 0, 0);
+	    ctx.drawImage(elem[0], 0, 0);
 
 	    // Get the data-URL formatted image
 	    // Firefox supports PNG and JPEG. You could check img.src to
@@ -25,11 +23,6 @@
 
 	    return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
 	}
-
-	navigator.mediaDevices.enumerateDevices()
-	  .then(gotDevices).then(getStream).catch(handleError);
-
-	videoSelect.onchange = getStream;
 
 	function gotDevices(deviceInfos) {
 	  for (let i = 0; i !== deviceInfos.length; ++i) {
@@ -41,7 +34,7 @@
 	        (videoSelect.length + 1);
 	      videoSelect.appendChild(option);
 	    } else {
-	      console.log('Found another kind of device: ', deviceInfo);
+	      // console.log('Found another kind of device: ', deviceInfo);
 	    }
 	  }
 	}
@@ -65,7 +58,7 @@
 
 	function gotStream(stream) {
 	  window.stream = stream; // make stream available to console
-	  video.srcObject = stream;
+	  video[0].srcObject = stream;
 	}
 
 	function handleError(error) {
@@ -73,8 +66,15 @@
 	}
 
 	// Trigger photo take
-	document.getElementById('snap').addEventListener('click', function() {
-		console.log(getBase64Image(video));
-		// video.pause();
+	video.click(function(e){
+
+	    console.log(getBase64Image(video));
+	    alert('got it');
+	    video.pause();
 	});
+
+	// populate the video select
+	navigator.mediaDevices.enumerateDevices().then(gotDevices).then(getStream).catch(handleError);
+	videoSelect.onchange = getStream;
+	
 })();
